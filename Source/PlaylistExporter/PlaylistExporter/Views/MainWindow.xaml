@@ -1,0 +1,73 @@
+﻿<Window x:Class="PlaylistExporter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:viewModels="clr-namespace:PlaylistExporter.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Headline}" Height="450" Width="600" Icon="/PlaylistExporter;component/Images/snl_logo.png">
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel/>
+    </Window.DataContext>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Load playlist" Command="{Binding LoadPlaylistCommand}"/>
+                <MenuItem Header="Update current playlist" Command="{Binding UpdatePlaylistCommand}"/>
+                <MenuItem Header="Export playlist" Command="{Binding ExportPlaylistCommand}"/>
+                <MenuItem Header="Exit" Command="{Binding ExitApplicationCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Playlist:" VerticalAlignment="Center" Margin="6,6,0,6"/>
+                <TextBlock Grid.Column="1" Text="{Binding SourcePath}" VerticalAlignment="Center">
+                </TextBlock>
+                <Button Grid.Column="2" Content="..." Command="{Binding LoadPlaylistCommand}" Margin="6,6,6,6"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Target path:" VerticalAlignment="Center" Margin="6,6,0,6"/>
+                <TextBlock Grid.Column="1" Text="{Binding TargetPath}" VerticalAlignment="Center"/>
+                <Button Grid.Column="2" Content="..." Command="{Binding SetTargetPathCommand}" Margin="6,6,6,6"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding CurrentAction, Mode=OneWay}" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding CurrentTarget, Mode=OneWay}" VerticalAlignment="Center" Width="Auto"/>
+                <ProgressBar Grid.Column="2" Value="{Binding CopyProgress, Mode=OneWay}" Margin="3,3,3,3"/>
+            </Grid>
+        </Grid>
+        <ListView x:Name="Playlist" ItemsSource="{Binding Playlist}" IsTextSearchEnabled="False" Focusable="False">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="1" Text="{Binding Path=FilePath, Mode=OneWay}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </DockPanel>
+</Window>
